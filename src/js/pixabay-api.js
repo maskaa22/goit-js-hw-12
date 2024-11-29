@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const searchImage = async (search, page, perPage) => {
-  const url = `https://pixabay.com/api`;
+  const url = `https://pixabay.com/api/`;
 
   const response = await axios.get(url, {
     params: {
