@@ -29,6 +29,9 @@ let searchText = '';
 let totalPages = 0;
 
 const functionSearch = first => {
+  if (first) {
+    page = 1;
+  }
   searchImage(searchText, page, perPage)
     .then(({ hits, totalHits }) => {
       totalPages = Math.ceil(totalHits / perPage);
@@ -62,10 +65,13 @@ const functionSearch = first => {
         ? (gallery.innerHTML = images)
         : gallery.insertAdjacentHTML('beforeend', images);
       buttonLoadMore.style.visibility = 'visible';
+      buttonLoadMore.style.display = 'block';
 
       if (page + 1 > totalPages) {
         loader.style.display = 'none';
         buttonLoadMore.style.visibility = 'hidden';
+        if (totalPages === 0) return;
+
         return iziToast.info({
           iconColor: '#fff',
           imageWidth: 24,
@@ -86,6 +92,7 @@ const functionSearch = first => {
       form.reset();
     })
     .catch(error => {
+      loader.style.display = 'none';
       gallery.innerHTML = '';
       iziToast.error({
         iconUrl: errorIcon,
@@ -119,8 +126,10 @@ const createGalary = e => {
   functionSearch('first');
 };
 const addItemInGallery = () => {
+  buttonLoadMore.style.display = 'none';
   loader.style.display = 'block';
   section.insertAdjacentElement('beforeend', loader);
+  //setTimeout(() => functionSearch(), 1000);
   functionSearch();
 };
 
